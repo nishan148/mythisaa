@@ -1,0 +1,25 @@
+# Local secrets and environment overrides
+.env*
+!.env.example
+
+# Dependencies and generated build output
+node_modules/
+.next/
+.open-next/
+out/
+dist/
+
+# Cloudflare and TypeScript generated files
+.wrangler/
+cloudflare-env.d.ts
+*.tsbuildinfo
+
+# Local logs and OS/editor files
+*.log
+*.local
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Local MCP server projects and credentials
+mcp-servers/
