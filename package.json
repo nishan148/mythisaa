@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:cloudflare": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
@@ -16,6 +17,7 @@
   "keywords": [],
   "author": "",
   "license": "UNLICENSED",
+  "packageManager": "pnpm@10.11.1",
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.2",
     "@supabase/ssr": "^0.12.4",

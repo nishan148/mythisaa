@@ -1,13 +1,13 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { getPublicSupabaseConfig } from "@/lib/env";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
+  const config = getPublicSupabaseConfig();
+  if (!config) return supabaseResponse;
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    {
+  const supabase = createServerClient(config.url, config.key, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -19,10 +19,13 @@ export async function updateSession(request: NextRequest) {
           Object.entries(headers).forEach(([key, value]) => supabaseResponse.headers.set(key, value));
         },
       },
-    },
-  );
+  });
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error) {
+    console.error("Supabase session refresh failed", { message: error.message });
+    return supabaseResponse;
+  }
 
   if (request.nextUrl.pathname.startsWith("/account") && !user) {
     const url = request.nextUrl.clone();
